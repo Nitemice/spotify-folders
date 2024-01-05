@@ -21,7 +21,7 @@ except ImportError:
     from urllib.parse import unquote_plus  # Python 3
 
 
-LEVELDB_ROOTLIST_KEY = b"!pl#slc#\x1dspotify:user:{}:rootlist#"
+LEVELDB_ROOTLIST_KEY = b"!pl#slc# spotify:user:{}:rootlist#"
 
 if sys.platform == "darwin":
     # Mac
@@ -419,7 +419,6 @@ class TableReader:
                 for internal_key, value in TableData(handle, reader):
                     if internal_key.user_key == target_key:
                         return value
-                break
 
 
 class TableBlock:
