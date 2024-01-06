@@ -419,6 +419,7 @@ class TableReader:
                 for internal_key, value in TableData(handle, reader):
                     if internal_key.user_key == target_key:
                         return value
+                break
 
 
 class TableBlock:
@@ -617,12 +618,13 @@ def bytestring_less_or_equal(bytestring1, bytestring2):
     It seems Spotify's comparator behaves a bit like this;
     they call it "greenbase.KeyComparator".
     """
+    # groups can be separated by group separator char, or space char
+    group_separators = [0x1D, 0x20]
     # Compare byte by byte
-    group_separator = 0x1D
     for byte1, byte2 in zip(bytestring1, bytestring2):
-        if byte1 == group_separator and byte2 != group_separator:
+        if byte1 in group_separators and byte2 not in group_separators:
             return False
-        if byte1 != group_separator and byte2 == group_separator:
+        if byte1 not in group_separators and byte2 in group_separators:
             return True
         if byte1 < byte2:
             return True
